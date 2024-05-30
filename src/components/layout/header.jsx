@@ -15,7 +15,7 @@ const links = [
   { name: "Playground", url: "/playground" },
 ];
 
-export default function Header() {
+export function Header() {
   const pathName = usePathname();
   const audioRef = useRef(null);
   const musicURL = useRef([]);
@@ -27,12 +27,12 @@ export default function Header() {
   const [active, setActive] = useState(-1);
   const [hidden, setHidden] = useState(true);
 
-  let canFetch = true;
   useEffect(() => {
     const getData = async () => {
       const musicList = await Get("musics");
       if (musicList === null) return;
 
+      musicURL.current = [];
       for (const i of musicList) {
         if (i) {
           const url = await GetURL(i);
@@ -43,10 +43,7 @@ export default function Header() {
       setSource(musicURL.current[0]);
     };
 
-    if (canFetch) getData();
-    return () => {
-      canFetch = false;
-    };
+    getData();
   }, []);
 
   useEffect(() => {
@@ -120,13 +117,13 @@ export default function Header() {
           </button>
         </div>
         <div className="flex items-center gap-2 max-lg:hidden">
-          <Controls
+          {/* <Controls
             isPlaying={isPlaying}
             pOnclick={() => navigateSong(-1)}
             cOnClick={handlePlay}
             nOnclick={() => navigateSong(1)}
             slide={enableMusic}
-          />
+          /> */}
           <Switch
             disabled={source === null}
             onClick={() => {
@@ -137,17 +134,13 @@ export default function Header() {
           />
         </div>
         <div
-          className={`${
-            hidden ? "hidden" : ""
-          } flex lg:block max-lg:rounded-2xl max-lg:bg-black/80 max-lg:backdrop-blur max-lg:border-fuchsia-400 max-lg:border-2 max-lg:w-full m-2 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:mt-0`}>
+          className={`flex lg:block max-lg:rounded-2xl max-lg:bg-black/80 max-lg:backdrop-blur max-lg:border-fuchsia-400 max-lg:border-2 max-lg:w-full m-2 lg:absolute lg:top-1/2 lg:left-1/2 lg:-translate-x-1/2 lg:-translate-y-1/2 lg:mt-0`}>
           <ul className="font-medium flex flex-col p-4 lg:p-0 lg:flex-row lg:space-x-8 rtl:space-x-reverse">
             {links.map((link, index) => (
               <li
                 key={index}
                 onClick={() => setActive(index)}
-                className={`${
-                  index === active ? "text-blue-600" : ""
-                } flex items-center hover:text-blue-600`}>
+                className={`flex items-center hover:text-blue-600`}>
                 <Link href={link.url}>{link.name}</Link>
               </li>
             ))}

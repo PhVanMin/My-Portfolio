@@ -1,5 +1,3 @@
-"use client";
-import React from "react";
 import Info from "@/components/home/info";
 import List from "@/components/home/list";
 

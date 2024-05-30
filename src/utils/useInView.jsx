@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect, useRef } from "react";
 
 function useInView({
@@ -20,11 +22,11 @@ function useInView({
 
     const observer = new window.IntersectionObserver(([entry]) => {
       if (entry.isIntersecting) {
-        setInView(true);
         if (triggerOnce && !isInView) {
           observer.unobserve(elementRef.current);
           elementRef.current = null;
         }
+        setInView(true);
       } else {
         setInView(false);
       }
@@ -33,7 +35,9 @@ function useInView({
     observer.observe(elementRef.current);
 
     return () => {
-      if (elementRef.current) observer.unobserve(elementRef.current);
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
     };
   }, []);
 

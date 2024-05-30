@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 
 export default function ListComponent({ size, shadow, image_src, name }) {

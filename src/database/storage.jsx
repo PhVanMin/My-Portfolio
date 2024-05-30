@@ -4,7 +4,7 @@ import { Add, Get } from "./database";
 
 async function GetURL(url) {
   const strRef = ref(storage, url);
-  return getDownloadURL(strRef);
+  return getDownloadURL(strRef).catch((error) => console.log(error));
 }
 
 async function AddFile(url, file) {

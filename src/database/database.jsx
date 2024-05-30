@@ -14,7 +14,7 @@ async function Get(table = "", id = "") {
 
 async function Add(table, id, data) {
   const dbRef = ref(database, `${table}/${id}`);
-  return set(dbRef, data);
+  return set(dbRef, data).catch((error) => console.log(error));
 }
 
 export { Get, Add };

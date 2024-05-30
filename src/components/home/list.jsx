@@ -1,3 +1,5 @@
+"use client";
+
 import ListComponent from "./list_component";
 import { useInView } from "@/utils/useInView";
 

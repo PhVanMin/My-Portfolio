@@ -6,9 +6,10 @@ import avatar from "../../../public/amongus.png";
 import avatarDancing from "../../../public/dancing.gif";
 import { useStore } from "@/zustand/store";
 import { useInView } from "@/utils/useInView";
+import { useShallow } from "zustand/react/shallow";
 
 export default function Info() {
-  const isPlaying = useStore((state) => state.isMusicPlaying);
+  const isPlaying = useStore(useShallow((state) => state.isMusicPlaying));
   const { ref, isInView } = useInView({ triggerOnce: true });
   return (
     <section
