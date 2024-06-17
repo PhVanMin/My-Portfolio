@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStore } from "@/zustand/store";
 import { useShallow } from "zustand/react/shallow";
 import { Get } from "@/database/database";
@@ -13,8 +13,6 @@ export function Controls({ width = 100, height = 30, enable = false }) {
   const musicURL = useRef(null);
   const audio = useRef(null);
   const [index, setIndex] = useState(-1);
-
-  // const handleNextSong = useCallback((i) => setIndex(getNextIndex(i)), []);
 
   useEffect(() => {
     const getData = async () => {
@@ -35,8 +33,6 @@ export function Controls({ width = 100, height = 30, enable = false }) {
 
   useEffect(() => {
     if (index != -1) {
-      console.log("audio can play");
-
       audio.current = new Audio(musicURL.current[index]);
       audio.current.load();
 
@@ -45,11 +41,10 @@ export function Controls({ width = 100, height = 30, enable = false }) {
       }
 
       const nextSong = () => {
-        setIndex(1);
+        navigateSong(1);
       };
 
       audio.current.addEventListener("ended", nextSong);
-
       return () => {
         audio.current.pause();
         audio.current.removeEventListener("ended", nextSong);
@@ -82,11 +77,9 @@ export function Controls({ width = 100, height = 30, enable = false }) {
     if (!isPlaying) {
       playMusic();
       audio.current.play();
-      console.log("play");
     } else {
       pauseMusic();
       audio.current.pause();
-      console.log("pause");
     }
   };
 

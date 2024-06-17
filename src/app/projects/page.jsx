@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   Select,
@@ -8,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 
 const ProjectItem = ({
@@ -51,9 +54,10 @@ const ProjectItem = ({
   );
 };
 
-const SelectFilter = ({ placeholder, items = [], className }) => {
+const SelectFilter = ({ placeholder, items = [], className, filter }) => {
+  console.log("render");
   return (
-    <Select>
+    <Select onValueChange={(value) => filter(value)}>
       <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
@@ -70,7 +74,7 @@ const SelectFilter = ({ placeholder, items = [], className }) => {
   );
 };
 
-const projects = [
+const my_projects = [
   {
     name: "Online Clothing Shop",
     skill: ["ExpressJS", "Bootstrap"],
@@ -100,6 +104,24 @@ const projects = [
 ];
 
 export default function Projects() {
+  const [projects, setProjects] = useState(my_projects);
+
+  const getFilter = () => {
+    const filter = new Set(["All"]);
+    for (const i of my_projects) {
+      for (const s of i.skill) {
+        filter.add(s);
+      }
+    }
+
+    return Array.from(filter);
+  };
+
+  const hanldeFilter = (keyword) => {
+    if (keyword === "All") setProjects(my_projects);
+    else setProjects(my_projects.filter((p) => p.skill.includes(keyword)));
+  };
+
   return (
     <section className="w-full p-4">
       <div className="text-5xl flex justify-center font-extrabold">
@@ -110,9 +132,10 @@ export default function Projects() {
       <div className="my-4 flex gap-x-3 justify-end items-center">
         <h1 className="text-lg">Filter</h1>
         <SelectFilter
+          filter={hanldeFilter}
           placeholder={"All"}
           className="w-[180px] focus:ring-offset-0 bg-transparent border-2 border-blue-700"
-          items={["All", "ReactJS"]}
+          items={getFilter()}
         />
       </div>
       <div className="flex flex-col gap-3">

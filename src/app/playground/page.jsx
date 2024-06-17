@@ -23,7 +23,6 @@ const Child2 = memo(({ onClick }) => {
 });
 
 export default function Playground() {
-  console.log("parent render");
   const [count, setCount] = useState(0);
   const handleClick = useCallback(() => {
     setCount((count) => count + 1);

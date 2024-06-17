@@ -1,8 +1,9 @@
 "use client";
 import Link from "next/link";
-import { memo, useCallback, useState, useRef } from "react";
+import { memo, useCallback, useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Controls } from "@/components/ui/header_music_controls";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
   {
@@ -20,8 +21,6 @@ const navLinks = [
 ];
 
 const MusicControl = memo(({ className }) => {
-  console.log("music control");
-
   const [enabled, setEnabled] = useState(false);
   const handleSwitch = useCallback(() => setEnabled((state) => !state), []);
   return (
@@ -36,6 +35,7 @@ const MusicControl = memo(({ className }) => {
 });
 
 export const Header = () => {
+  const path = usePathname();
   const [navbarOpen, setNavbarOpen] = useState(false);
   const handleOpen = useCallback(() => setNavbarOpen((state) => !state));
 
@@ -74,7 +74,9 @@ export const Header = () => {
               <li key={index}>
                 <Link
                   href={link.path}
-                  className="block py-1 text-white sm:text-xl rounded md:p-0 hover:text-blue-500">
+                  className={`${
+                    link.path === path ? "text-blue-500" : "hover:text-blue-500"
+                  } block py-1 text-white sm:text-xl rounded md:p-0`}>
                   {link.title}
                 </Link>
               </li>
